@@ -1,0 +1,30 @@
+{
+  "name": "dashmark",
+  "version": "1.0.0",
+  "description": "Markdown-inspired markup format.",
+  "main": "build/npm/src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "p9k npm:test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dashkite/dashmark.git"
+  },
+  "author": "Dan Yoder <dan@dashkite.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dashkite/dashmark/issues"
+  },
+  "homepage": "https://github.com/dashkite/dashmark#readme",
+  "devDependencies": {
+    "amen": "^2.1.0",
+    "panda-9000": "^4.4.0",
+    "panda-builder": "^3.2.1"
+  },
+  "dependencies": {
+    "panda-grammar": "^1.2.0"
+  }
+}
