@@ -66,6 +66,8 @@ style = (name, delimiter) ->
 
   ) ->
 
+    # TODO i think the forward -> styled part here is a bug
+    #      ex: _some *text*_
     text = tag "text", til any eol, (lk close), forward -> styled
     tag name, rule (between open, close, text), ({value}) -> [ value ]
 
@@ -73,7 +75,12 @@ em = style "em", "_"
 strong = style "strong", "*"
 code = style "code", "`"
 
-styled = any em, strong, code
+link = rule (all (between (string "["), (string "]"), (til lk string "]")),
+  between (string "("), (string ")"), re /^[^)]+/), ({value}) ->
+    [ _text, url ] = value
+    [ "a", { href: url }, (text _text).value ]
+
+styled = any em, strong, code, link
 
 unstyled = tag "text", til any styled, eol
 

@@ -16,7 +16,7 @@ mode = (tag) ->
     else
       "<#{tag} #{attributes}>#{render tree}</#{tag}>"
 
-tags = "h1 h2 h3 h4 h5 p ul li blockquote pre code p em strong"
+tags = "h1 h2 h3 h4 h5 p ul li blockquote pre code p em strong a"
 mode tag for tag in (tags.split " ")
 
 render = (tree) ->
