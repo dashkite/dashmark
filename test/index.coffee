@@ -133,39 +133,70 @@ do ->
     #       ]]
     #     ]
 
-    test "blockquote", ->
-      assert.equal "", (bq """
-        >  This is the first line.
-        >
-        >This is the second line.
-        > This is the third line.
-        >
-        >>This is the second line.
-        >> This is the third line.
-        >>
-      """).rest
-
-    # test "start rule", ->
-    #
-    #   assert.equal "", (start """
-    #     # Hi There
-    #
-    #     This is *dashmark*, inspired by _markdown_.
-    #
-    #     ## Bulleted List
-    #
-    #     Features include:
-    #
-    #     - code fences, with language attribute
-    #     - proper subset for quick/easy parsing
-    #
-    #     ## Code Fence
-    #
-    #     ```coffee
-    #     foo = -> "hello world"
-    #     ```
+    # test "blockquote", ->
+    #   assert.equal "", (bq """
+    #     >  This is the first line.
+    #     >
+    #     >This is the second line.
+    #     > This is the third line.
+    #     >
+    #     >>This is the second line.
+    #     >> This is the third line.
+    #     >>
     #   """).rest
 
+    test "start rule", ->
+
+      assert.equal "", (start """
+        # Hi There
+
+        This is *dashmark*, inspired by _markdown_.
+
+        ## Bulleted List
+
+        Features include:
+
+        - code fences, with language attribute
+        - proper subset for quick/easy parsing
+
+        ## Code Fence
+
+        ```coffee
+        foo = -> "hello world"
+        ```
+
+        ## Blockquote
+
+        > This is quoted text.
+        > With line-breaks.
+      """).rest
+
+    test "convert", ->
+      expected = "<h1>Hi There</h1><p>This is <strong>dashmark</strong>, inspired by <em>markdown</em>.<br/></p><h2>Bulleted List</h2><p>Features include:<br/></p><ul><li>code fences, with language attribute</li><li>proper subset for quick/easy parsing</li></ul><h2>Code Fence</h2><pre language='coffee'><code>foo = -> \"hello world\"</code></pre><h2>Blockquote</h2><blockquote><p>This is quoted text.<br/>With line-breaks.<br/></p></blockquote>"
+
+      assert.equal expected, convert """
+        # Hi There
+
+        This is *dashmark*, inspired by _markdown_.
+
+        ## Bulleted List
+
+        Features include:
+
+        - code fences, with language attribute
+        - proper subset for quick/easy parsing
+
+        ## Code Fence
+
+        ```coffee
+        foo = -> "hello world"
+        ```
+
+        ## Blockquote
+
+        > This is quoted text.
+        > With line-breaks.
+      """
 
   ]
 

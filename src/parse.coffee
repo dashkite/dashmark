@@ -135,10 +135,8 @@ bq = tag "blockquote", indent ">", forward -> start
 # paragraphs
 #
 
-# TODO for the moment, we don't handle:
-#      - blocks immediately following eol
+# TODO for the moment, we don't handle blocks immediately following eol
 
-# paragraphs end with either a eol/bol/eol sequence or eol/!bol
 eop = any (all bol, eol), (all eol, negate bol)
 bop = all bol, negate string ">"
 p = tag "p", suffix eop, many tag "line", between bop, eol, text

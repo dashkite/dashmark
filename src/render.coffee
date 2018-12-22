@@ -6,6 +6,7 @@ renderAttributes = (attributes) ->
 
 modes =
   text: (_, s) -> s
+  line: (_, tree) -> "#{render tree}<br/>"
 
 mode = (tag) ->
   modes[tag] = (attributes, tree) ->
