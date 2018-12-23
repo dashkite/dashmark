@@ -1,7 +1,6 @@
 import assert from "assert"
 import {print, test, success} from "amen"
-import {parse, render, convert,
-  styled, url, link, heading, fence, ul, ol, bq, p, start, links} from "../src/index"
+import {parser, parse, render, convert} from "../src/index"
 import {log, json} from "../src/helpers"
 
 do ->
@@ -10,6 +9,7 @@ do ->
 
     test "parse styles (em, strong, code)", ->
 
+      {styled} = parser()
       assert.deepEqual (styled "*hello world*"),
         rest: ''
         value: [ "strong", [[ "text", "hello world" ]]]
@@ -24,6 +24,7 @@ do ->
 
     test "parse headings (h1, h2, ...)", ->
 
+      {heading} = parser()
       assert.deepEqual (heading "# hello world"),
         rest: ''
         value: [ "h1", [[ "text", "hello world" ]]]
@@ -35,6 +36,7 @@ do ->
 
     test "url", ->
 
+      {url} = parser()
       assert.deepEqual (url "http://dashkite.com/home/dan"),
         value: [
             [[ "text", "http://dashkite.com/home/dan" ]]
@@ -44,6 +46,7 @@ do ->
 
     test "links", ->
 
+      {link} = parser()
       assert.deepEqual (link "[this is a link](#anything)"),
         value: [
             "a"
@@ -59,7 +62,7 @@ do ->
         foo = -> 'bar'
         ```
         """
-
+      {fence} = parser()
       assert.deepEqual (fence input),
         rest: ''
         value: [
@@ -84,6 +87,7 @@ do ->
           - This is the third item
           """
 
+        {ul} = parser()
         assert.deepEqual (ul input),
          rest: ""
          value: [
@@ -112,6 +116,7 @@ do ->
           + This is the third item
           """
 
+        {ol} = parser()
         assert.deepEqual (ol input),
          rest: ""
          value: [
@@ -135,6 +140,7 @@ do ->
 
     test "paragraphs (p)", ->
 
+      {p} = parser()
       assert.deepEqual (p "This is just a paragraph."),
         rest: ""
         value: [
@@ -144,6 +150,7 @@ do ->
           ]]
         ]
 
+      {p} = parser()
       assert.deepEqual (p "This is just a paragraph.\n"),
         rest: ""
         value: [
@@ -154,6 +161,8 @@ do ->
         ]
 
     test "blockquote", ->
+
+      {bq} = parser()
       assert.equal "", (bq """
         >  This is the first line.
         >
@@ -163,32 +172,6 @@ do ->
         >>This is the second line.
         >> This is the third line.
         >>
-      """).rest
-
-    test "start rule", ->
-
-      assert.equal "", (start """
-        # Hi There
-
-        This is *dashmark*, inspired by _markdown_.
-
-        ## Bulleted List
-
-        Features include:
-
-        - code fences, with language attribute
-        - proper subset for quick/easy parsing
-
-        ## Code Fence
-
-        ```coffee
-        foo = -> "hello world"
-        ```
-
-        ## Blockquote
-
-        > This is quoted text.
-        > With line-breaks.
       """).rest
 
     test "convert", ->
@@ -228,9 +211,8 @@ do ->
 
       assert.equal expected, convert document
 
-
+      {links} = parser()
       assert.deepEqual (links document), [
-        "#anything"
         "https://dashkite.com"
         "https://dashkite.com/home/dan"
       ]
