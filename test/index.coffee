@@ -1,7 +1,7 @@
 import assert from "assert"
 import {print, test, success} from "amen"
 import {parse, render, convert,
-  styled, url, link, heading, fence, ul, ol, bq, p, start} from "../src/index"
+  styled, url, link, heading, fence, ul, ol, bq, p, start, links} from "../src/index"
 import {log, json} from "../src/helpers"
 
 do ->
@@ -35,7 +35,12 @@ do ->
 
     test "url", ->
 
-      log url "http://dashkite.com/home/dan"
+      assert.deepEqual (url "http://dashkite.com/home/dan"),
+        value: [
+            [[ "text", "http://dashkite.com/home/dan" ]]
+            "http://dashkite.com/home/dan"
+          ]
+        rest: ""
 
     test "links", ->
 
@@ -187,10 +192,9 @@ do ->
       """).rest
 
     test "convert", ->
-      expected = "<h1>Hi There</h1>This is <strong>dashmark</strong>, inspired by <em>markdown</em>. 🙂<h2>Links</h2>This is <a href='https://dashkite.com'>a <em>link</em></a>.<h2>Bulleted List</h2>Features include:<ul><li>code fences, with <code>language</code> attribute</li><li>proper subset for quick/easy parsing</li></ul><h2>Code Fence</h2><pre language='coffee'><code>foo = -> \"hello world\"</code></pre><h2>Blockquote</h2><blockquote>This is quoted text.<br/>With line-breaks.</blockquote>"
+      expected = "<h1>Hi There</h1><p>This is <strong>dashmark</strong>, inspired by <em>markdown</em>. 🙂<h2>Links</h2><p>This is <a href='https://dashkite.com'>a <em>link</em></a>.<p>You can also have them as literals:<p><a href='https://dashkite.com/home/dan'>https://dashkite.com/home/dan</a><h2>Bulleted List</h2><p>Features include:<ul><li>code fences, with <code>language</code> attribute</li><li>proper subset for quick/easy parsing</li></ul><h2>Code Fence</h2><pre language='coffee'><code>foo = -> \"hello world\"</code></pre><h2>Blockquote</h2><blockquote><p>This is quoted text.<br/></p>With line-breaks.</blockquote>"
 
-      # assert.equal expected, convert """
-      log convert """
+      document = """
         # Hi There
 
         This is *dashmark*, inspired by _markdown_. :)
@@ -221,6 +225,15 @@ do ->
         > This is quoted text.
         > With line-breaks.
       """
+
+      assert.equal expected, convert document
+
+
+      assert.deepEqual (links document), [
+        "#anything"
+        "https://dashkite.com"
+        "https://dashkite.com/home/dan"
+      ]
 
   ]
 

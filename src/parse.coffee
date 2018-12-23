@@ -6,6 +6,10 @@ import {re, word, ws, string, any, optional, forward,
 import {prefix, suffix, lk, thru, til,
   ignore, tag, none, negate, first, msg} from "./helpers"
 
+memoize = (p) ->
+  cache = {}
+  (s) -> cache[s] ?= p s
+
 #
 # beginning/end of line parsing
 #
@@ -109,7 +113,7 @@ url = do (
           {value, rest}
 
 
-link = do (
+[ link, links ] = do (
 
     linkText = undefined
     delimitedLinkText = undefined
@@ -118,21 +122,30 @@ link = do (
     delimitedURL = undefined
     urlOpen = string "("
     urlClose = string ")"
+    catalog = []
+    value = undefined
 
   ) ->
 
     linkText = forward -> close linkTextClose, text
     delimitedLinkText = between linkTextOpen, linkTextClose, linkText
-    # delimitedLinkText = between linkTextOpen, linkTextClose, til linkTextClose
 
     delimitedURL = between urlOpen, urlClose, til urlClose
 
-    rule (any url, (all delimitedLinkText, delimitedURL)), ({value}) ->
-      [
-        "a"                   # tag name
-        href: value[1]        # attributes
-        value[0]              # subtree
-      ]
+    [
+      memoize rule (any url, (all delimitedLinkText, delimitedURL)), ({value}) ->
+        catalog.push value[1]
+        [
+          "a"                   # tag name
+          href: value[1]        # attributes
+          value[0]              # subtree
+        ]
+
+      (s) ->
+        parse s
+        catalog
+
+    ]
 
 emoji = do (
 
@@ -181,7 +194,7 @@ styled = any em, strong, code, link, emoji
 
   ) ->
 
-    unstyled = tag "text", til forward -> any stop..., styled, eol
+    unstyled = memoize tag "text", til forward -> any stop..., styled, eol
 
     [
 
@@ -264,4 +277,4 @@ start = many first all block, optional many blank
 
 parse = grammar start
 
-export {styled, url, link, heading, fence, ul, ol, bq, p, start, parse}
+export {styled, url, link, heading, fence, ul, ol, bq, p, start, parse, links}
