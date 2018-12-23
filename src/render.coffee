@@ -8,8 +8,10 @@ modes =
   text: (_, s) -> s
   line: (_, tree) -> render tree
   p: (_, tree) ->
-    (for node in tree
-      modes.line node...).join "<br/>"
+    "<p>" +
+      (for node in tree
+        modes.line node...).join "<br/>" +
+      "</p>"
 
 mode = (tag) ->
   modes[tag] = (attributes, tree) ->
