@@ -183,10 +183,9 @@ do ->
       """).rest
 
     test "convert", ->
-      expected = "<h1>Hi There</h1><p>This is <strong>dashmark</strong>, inspired by <em>markdown</em>. 🙂</p><h2>Links</h2><p>This is <a href='https://dashkite.com'>a <em>link</em></a>.<br/></p><h2>Bulleted List</h2><p>Features include:<br/></p><ul><li>code fences, with <code>language</code> attribute</li><li>proper subset for quick/easy parsing</li></ul><h2>Code Fence</h2><pre language='coffee'><code>foo = -> \"hello world\"</code></pre><h2>Blockquote</h2><blockquote><p>This is quoted text.<br/>With line-breaks.<br/></p></blockquote>"
+      expected = "<h1>Hi There</h1>This is <strong>dashmark</strong>, inspired by <em>markdown</em>. 🙂<h2>Links</h2>This is <a href='https://dashkite.com'>a <em>link</em></a>.<h2>Bulleted List</h2>Features include:<ul><li>code fences, with <code>language</code> attribute</li><li>proper subset for quick/easy parsing</li></ul><h2>Code Fence</h2><pre language='coffee'><code>foo = -> \"hello world\"</code></pre><h2>Blockquote</h2><blockquote>This is quoted text.<br/>With line-breaks.</blockquote>"
 
-      # assert.equal expected, convert """
-      log convert """
+      assert.equal expected, convert """
         # Hi There
 
         This is *dashmark*, inspired by _markdown_. :)
