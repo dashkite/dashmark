@@ -1,4 +1,4 @@
-import {rule, all} from "panda-grammar"
+import {rule, all, any} from "panda-grammar"
 
 prefix = (before, p) ->
   rule (all before, p), ({value}) -> value[1]
@@ -31,6 +31,11 @@ negate = (p) ->
   (s) ->
     if !(p s)?
       rest: s
+
+none = (px...) ->
+  q = any px...
+  (s) -> rest: s if !(m = q s)?
+
 
 ignore = (p) -> rule p, -> undefined
 
@@ -83,5 +88,5 @@ log = (x) -> console.warn json x
 #
 #   (d, p) -> rule p, snowball d
 
-export {prefix, suffix, lk, thru, til, ignore, tag, negate, first,
+export {prefix, suffix, lk, thru, til, ignore, tag, none, negate, first,
   json, msg, log}

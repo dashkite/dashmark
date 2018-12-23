@@ -6,7 +6,10 @@ renderAttributes = (attributes) ->
 
 modes =
   text: (_, s) -> s
-  line: (_, tree) -> "#{render tree}<br/>"
+  line: (_, tree) -> render tree
+  p: (_, tree) ->
+    (for node in tree
+      modes.line node...).join "<br/>"
 
 mode = (tag) ->
   modes[tag] = (attributes, tree) ->
@@ -16,7 +19,7 @@ mode = (tag) ->
     else
       "<#{tag} #{attributes}>#{render tree}</#{tag}>"
 
-tags = "h1 h2 h3 h4 h5 p ul li blockquote pre code p em strong a"
+tags = "h1 h2 h3 h4 h5 ul li blockquote pre code em strong a"
 mode tag for tag in (tags.split " ")
 
 render = (tree) ->
