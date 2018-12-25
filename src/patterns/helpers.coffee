@@ -54,39 +54,19 @@ msg = (tag, p) ->
 
 log = (x) -> console.warn json x
 
-# debug = (p) -> rule p, (match) -> console.log {match}
-#
-# snowball = do (snowball = undefined) ->
-#
-#   snowball = (d) ->
-#
-#     ({value}) ->
-#
-#       do (
-#
-#         tag = undefined
-#         _tag = undefined
-#         tree = undefined
-#         _tree = undefined
-#         result = undefined
-#
-#         ) ->
-#
-#           for [ _tag, _tree ] in value
-#             if _tag == tag
-#               tree = [ tree..., d, _tree... ]
-#             else
-#               if tree?
-#                 result.push [ tag, tree ]
-#               else
-#                 result = []
-#               tag = _tag
-#               tree = [ _tree... ]
-#
-#           result.push [ tag, tree ]
-#           result
-#
-#   (d, p) -> rule p, snowball d
+memoize = (p) ->
+  cache = {}
+  (s) -> cache[s] ?= p s
+
+between = (args...) ->
+  switch args.length
+    when 2
+      open = close = args[0]
+      p = args[1]
+    when 3
+      [ open, close, p ] = args
+
+  rule (all open, p, close), ({value: [,v]}) -> v
 
 export {prefix, suffix, lk, thru, til, ignore, tag, none, negate, first,
-  json, msg, log}
+  json, msg, log, memoize, between}
