@@ -6,6 +6,7 @@ renderAttributes = (attributes) ->
 
 modes =
   text: (_, s) -> s
+  code: (_, s) -> s
   line: (_, tree) -> render tree
   p: (_, tree) ->
     "<p>" +
