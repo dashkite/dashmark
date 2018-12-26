@@ -5,6 +5,20 @@ import {once} from "./helpers"
 import $lines from "./lines"
 import $styles from "./styles"
 
+escape = (c, p) ->
+  do (skip = false) ->
+    (s) ->
+      console.warn {skip, s}
+      if skip
+        skip = false
+        undefined
+      else
+        if s[0] != c
+          p s
+        else
+          skip = true
+          undefined
+
 export default (context) ->
 
   # initially, we just want to parse any text

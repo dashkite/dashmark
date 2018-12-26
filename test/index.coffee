@@ -25,6 +25,7 @@ do ->
             rest: "", value: [ "code", "code" ]
       ]
 
+
     test "text", do ->
 
       {text} = $text {}
@@ -57,6 +58,14 @@ do ->
                 [[ "text", "text" ]]
               ]
             ]
+
+        test "unmatched characters", ->
+          assert.deepEqual (text "use an _ for emphasis"),
+            rest: "", value: [[ "text", "use an _ for emphasis" ]]
+
+        test "escaped characters", ->
+          assert.deepEqual (text "one \\_ followed by another _"),
+            rest: "", value: [[ "text", "one _ followed by another _" ]]
       ]
 
 

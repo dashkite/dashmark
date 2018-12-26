@@ -11,17 +11,22 @@ lk = (p) ->
     if (p s)?
       value: undefined, rest: s
 
+# TODO how to avoid hardcoding escapes?
 thru = (stop) ->
   (s) ->
     rest = s
     value = ""
     while rest.length > 0
-      if (m = stop rest)?
-        {rest} = m
-        break
+      if rest[0] == "\\"
+        value += rest[1]
+        rest = rest[2..]
       else
-        value += rest[0]
-        rest = rest[1..]
+        if (m = stop rest)?
+          {rest} = m
+          break
+        else
+          value += rest[0]
+          rest = rest[1..]
     if value.length > 0
       {value, rest}
 

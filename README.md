@@ -1,6 +1,6 @@
 # DashMark
 
-DashMark is DashKite's Markdown-inspired markup format. It's simpler than Markdown, but we may add features in the future.
+DashMark is D ashKite's Markdown-inspired markup format. It's simpler than Markdown, but we may add features in the future.
 
 DashMark currently supports:
 
@@ -43,4 +43,3 @@ Or you can use [wiki-style links](https://dashkite.com/join).
 
 Emojis are supported via emoticons. :) And quotes are “replaced” by smart quotes, dashes by -- em-dashes -- and so on.
 ```
-
