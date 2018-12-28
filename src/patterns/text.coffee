@@ -4,6 +4,7 @@ import {once} from "./helpers"
 
 import $lines from "./lines"
 import $styles from "./styles"
+import emoji from "./emoji"
 
 escape = (c, p) ->
   do (skip = false) ->
@@ -38,12 +39,12 @@ export default (context) ->
   # defer initialization to avoid circular dependency with styles
   # once combinator ensures we don't execute this twice for a given context
   initialize = once ->
-    {styled} = $styles context
     normal = til any closing, styled, eol
     {normal, styled}
 
   text = forward ->
+    {styled} = $styles context
     {normal, styled} = initialize()
-    many any (tag "text", normal), styled
+    many any (tag "text", normal), styled, emoji
 
   {text, close, closing}

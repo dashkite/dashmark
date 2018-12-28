@@ -66,6 +66,11 @@ do ->
         test "escaped characters", ->
           assert.deepEqual (text "one \\_ followed by another _"),
             rest: "", value: [[ "text", "one _ followed by another _" ]]
+
+        test "emoji", ->
+          assert.deepEqual (text "smile :)"),
+            rest: "", value: [[ "text", "smile" ], [ "text", "🙂" ]]
+
       ]
 
 
