@@ -1,6 +1,6 @@
 {
   "name": "dashmark",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Markdown-inspired markup format.",
   "main": "build/npm/src/index.js",
   "directories": {
